@@ -2,9 +2,6 @@
 
 import os
 import pytube
-# from pytube import Playlist  # If you import like this you could leave off pytube when using methods from Playlist
-# example: playlist = pytube.Playlist(link) could be written like playlist = Playlist(link)
-import re
 
 DOWNLOAD_DIR = 'R:\\Youtube'
 print("Download Directory " + DOWNLOAD_DIR)
@@ -12,8 +9,6 @@ print("Download Directory " + DOWNLOAD_DIR)
 
 def check_playlist(aLink, aIdtag):
     link = pytube.Playlist(aLink)
-    # this fixes the empty playlist.videos list
-    #link._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
     try:
         if len(link.video_urls) > 0:
             pass
