@@ -2,8 +2,15 @@
 
 import os
 import pytube
+import tkinter as tk
+from tkinter import filedialog
 
-DOWNLOAD_DIR = 'R:\\Youtube'
+root = tk.Tk()
+root.withdraw()
+
+#file_path = filedialog.askopenfilename()
+folder = filedialog.askdirectory()
+DOWNLOAD_DIR = folder.replace("/", "\\")
 print("Download Directory " + DOWNLOAD_DIR)
 
 
