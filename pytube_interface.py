@@ -14,24 +14,37 @@ DOWNLOAD_DIR = folder.replace("/", "\\")
 print("Download Directory " + DOWNLOAD_DIR)
 
 
-def check_playlist(aLink, aIdtag):
+def check_playlist(aLink, aItag):
     link = pytube.Playlist(aLink)
     try:
         if len(link.video_urls) > 0:
             pass
     except:
         link = pytube.YouTube(aLink)
-        download(link, aIdtag)
+        download(link, aItag)
     else:
         for myStream in link.videos:
-            download(myStream, aIdtag)
+            download(myStream, aItag)
 
 
-def download(aStream, aIdtag):
-    stream = aStream.streams.get_by_itag(aIdtag)
-    mp4_file = stream.default_filename
+def download(aStream, aItag):
+    try:
+        stream = aStream.streams.get_by_itag(aItag)
+        mp4_file = stream.default_filename
+    except:
+        vid = False
+        if aItag == 22:
+            vid = True
+        stream = aStream.streams.filter(progressive=vid)
+        print("Default itag is unavailable. ")
+        print("Choose an available itag. ")
+        for each in stream:
+            print(each)
+        Itag = input("Enter itag: ")
+        stream = aStream.streams.get_by_itag(Itag)
+        mp4_file = stream.default_filename
     stream.download(output_path=DOWNLOAD_DIR, filename=mp4_file)
-    if aIdtag == 140:  # convert audio only stream to mp3
+    if aItag == 140:  # convert audio only stream to mp3
         mp4_to_mp3(mp4_file)
 
 
@@ -50,11 +63,11 @@ def main():
     choose = input("Video(v) or Audio(a) only:")
 
     if choose == "a":
-        idtag = 140  # mp4 audio only. modify the value to download a different stream
+        itag = 140  # mp4 audio only. modify the value to download a different stream
     else:
-        idtag = 22  # mp4 avideo with audio. modify the value to download a different stream
+        itag = 22  # mp4 video with audio. modify the value to download a different stream
 
-    check_playlist(link, idtag)
+    check_playlist(link, itag)
 
 
 if __name__ == "__main__":
